@@ -32,7 +32,7 @@ def google_oauth_login():
     st.markdown(f'<a href="{authorization_url}" target="_blank">Click here to log in with Google</a>', unsafe_allow_html=True)
 
     # After user logs in, Google will redirect back to this app with the authorization code
-    authorization_response = st.experimental_get_query_params()
+    authorization_response = st.query_params
     
     if 'code' in authorization_response:
         token = oauth.fetch_token(token_url, authorization_response=authorization_response)
