@@ -1,6 +1,5 @@
 import streamlit as st
 from authlib.integrations.requests_client import OAuth2Session
-import os
 
 # Function to create the login screen
 def login_screen():
@@ -17,11 +16,11 @@ def google_oauth_login():
     
     # Google OAuth2 configuration
     authorization_base_url = 'https://accounts.google.com/o/oauth2/auth'
-    token_url = 'https://accounts.google.com/o/oauth2/token'
+    token_url = 'https://oauth2.googleapis.com/token'
     scope = 'openid profile email'
 
-    # Redirect URI to your Streamlit app
-    redirect_uri = "https://j-kliq-mpub.streamlit.app"  # Update to your deployed app URL
+    # Redirect URI to your Streamlit Cloud app
+    redirect_uri = "https://testesttest.streamlit.app/"  # Update to your deployed app URL
 
     # Initialize OAuth2 session
     oauth = OAuth2Session(client_id, client_secret, redirect_uri=redirect_uri, scope=scope)
@@ -33,7 +32,6 @@ def google_oauth_login():
     st.markdown(f'<a href="{authorization_url}" target="_blank">Click here to log in with Google</a>', unsafe_allow_html=True)
 
     # After user logs in, Google will redirect back to this app with the authorization code
-    # You will need to handle this redirect and exchange the authorization code for an access token
     authorization_response = st.experimental_get_query_params()
     
     if 'code' in authorization_response:
