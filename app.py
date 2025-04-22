@@ -25,8 +25,8 @@ def google_oauth_login():
     # Initialize OAuth2 session
     oauth = OAuth2Session(client_id, client_secret, redirect_uri=redirect_uri, scope=scope)
 
-    # Get the authorization URL and state
-    authorization_url, state = oauth.authorization_url(authorization_base_url)
+    # Get the authorization URL and state (use create_authorization_url instead of authorization_url)
+    authorization_url, state = oauth.create_authorization_url(authorization_base_url)
 
     # Redirect user to Google login page
     st.markdown(f'<a href="{authorization_url}" target="_blank">Click here to log in with Google</a>', unsafe_allow_html=True)
