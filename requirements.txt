@@ -1,0 +1,11 @@
+streamlit>=1.42.0
+Authlib>=1.3.2
+geocoder
+folium
+plotly 
+fpdf
+matplotlib
+streamlit_folium
+streamlit_geolocation
+openpyxl
+openrouteservice
