@@ -1,5 +1,6 @@
 import streamlit as st
 from authlib.integrations.requests_client import OAuth2Session
+from authlib.oauth2.rfc6749.errors import OAuthError
 
 # Function to create the login screen
 def login_screen():
@@ -25,7 +26,7 @@ def google_oauth_login():
     # Initialize OAuth2 session
     oauth = OAuth2Session(client_id, client_secret, redirect_uri=redirect_uri, scope=scope)
 
-    # Get the authorization URL and state (use create_authorization_url instead of authorization_url)
+    # Get the authorization URL and state
     authorization_url, state = oauth.create_authorization_url(authorization_base_url)
 
     # Redirect user to Google login page
@@ -35,15 +36,20 @@ def google_oauth_login():
     authorization_response = st.query_params
     
     if 'code' in authorization_response:
-        token = oauth.fetch_token(token_url, authorization_response=authorization_response)
-        st.session_state.logged_in = True
-        st.session_state.token = token
-        user_info = oauth.get('https://www.googleapis.com/oauth2/v1/userinfo').json()
-        st.session_state.username = user_info['name']  # You can store more user info here
-        st.success(f"Hello, {st.session_state.username}!")
-        
-        # Redirect to the main app page after successful login
-        st.session_state.redirect_to_main = True
+        try:
+            token = oauth.fetch_token(token_url, authorization_response=authorization_response)
+            st.session_state.logged_in = True
+            st.session_state.token = token
+            user_info = oauth.get('https://www.googleapis.com/oauth2/v1/userinfo').json()
+            st.session_state.username = user_info['name']  # You can store more user info here
+            st.success(f"Hello, {st.session_state.username}!")
+            
+            # Redirect to the main app page after successful login
+            st.session_state.redirect_to_main = True
+        except OAuthError as e:
+            st.error(f"An error occurred while fetching the token: {e}")
+        except Exception as e:
+            st.error(f"An unexpected error occurred: {e}")
 
 # Main page logic
 if "logged_in" not in st.session_state or not st.session_state.logged_in:
