@@ -3,7 +3,7 @@ import streamlit as st
 
 st.title("Authentication")
 if st.button("Authenticate"):
-    st.login
+    st.login("google")
 
 # # Function to create the login screen
 # def login_screen():
