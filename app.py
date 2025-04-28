@@ -25,7 +25,7 @@ def google_oauth_login():
     # Initialize OAuth2 session
     oauth = OAuth2Session(client_id, client_secret, redirect_uri=redirect_uri, scope=scope)
 
-    # Get the authorization URL and state
+    # Get the authorization URL and state (use create_authorization_url instead of authorization_url)
     authorization_url, state = oauth.create_authorization_url(authorization_base_url)
 
     # Redirect user to Google login page
@@ -36,6 +36,7 @@ def google_oauth_login():
     
     if 'code' in authorization_response:
         try:
+            # Fetch the access token using the authorization code (authorization_code grant)
             token = oauth.fetch_token(token_url, authorization_response=authorization_response)
             st.session_state.logged_in = True
             st.session_state.token = token
@@ -59,8 +60,7 @@ else:
     
     # Log out button to clear the session
     if st.button("Log out"):
-        # Clear session state upon logout
-        st.session_state.clear()  # This clears all session state variables
-        st.write("You have logged out. Please log in again.")
-        # Optionally redirect to the login screen, no need to use st.experimental_rerun()
-        # The app will automatically show the login screen after session is cleared
+        st.session_state.logged_in = False
+        st.session_state.username = ""
+        st.session_state.token = ""
+        st.experimental_rerun()  # Refresh the app to go back to the login page
