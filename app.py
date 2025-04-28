@@ -47,8 +47,9 @@ def google_oauth_login():
 
 # Main page logic
 if "logged_in" not in st.session_state or not st.session_state.logged_in:
-    login_screen()
+    login_screen()  # Show login screen if the user is not logged in
 else:
+    # Main app page content after login
     st.header(f"Selamat Datang, {st.session_state.get('username', 'User')}!")
     st.write("You are successfully logged in. Here's the main content of the app.")
     
@@ -58,7 +59,8 @@ else:
     
     # Log out button to clear the session
     if st.button("Log out"):
-        st.session_state.logged_in = False
-        st.session_state.username = ""
-        st.session_state.token = ""
-        st.experimental_rerun()
+        # Clear session state upon logout
+        st.session_state.clear()  # This clears all session state variables
+        st.write("You have logged out. Please log in again.")
+        # Optionally redirect to the login screen, no need to use st.experimental_rerun()
+        # The app will automatically show the login screen after session is cleared
