@@ -1,5 +1,5 @@
 import streamlit as st
-from authlib.integrations.requests_client import OAuth2Session
+# from authlib.integrations.requests_client import OAuth2Session
 
 st.title("Authentication")
 if st.button("Authenticate"):
